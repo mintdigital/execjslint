@@ -2,58 +2,49 @@ require 'execjs'
 require 'jslint/source'
 
 module JSLint
-  # Public: Error wrapper for invalid JavaScript and ExecJS errors.
-  InvalidSource = Class.new(StandardError)
-
-  # Public: Exception thrown when a JSLint error is found.
-  class LintError < RuntimeError
-    # Public: Returns the errors object from JSLint.
-    attr_reader :errors
-
-    def initialize(errors)
-      @errors = errors
-      super "#{errors.size} JSLint Error#{'s' unless errors.size == 1}"
-    end
-  end
-
-  # Internal: Represents the result of a JSLint test.
-  Result = Struct.new(:success, :errors)
-
-  # Internal: The ExecJS context with JSLINT and JSLINTR functions.
+  # Internal: The ExecJS Context in which to run JSLINT().
   #
-  # Returns an ExecJS::Context.
+  # Provides a small helper function JSLINTR to return both the JSLINT()
+  # return value and the JSLINT.errors object.
   def self.context
-    @_context ||= ExecJS.compile(jslintr)
+    ExecJS.compile(
+      JSLint::Source.contents + "\n" +
+      "function JSLINTR(source) { return [JSLINT(source),JSLINT.errors]; };"
+    )
   end
 
-  # Internal: The JavaScript test harness used to run JSLint.
+  # Public: Run JSLint over some JavaScript source.
   #
-  # Returns the script as a String.
-  def self.jslintr
-    <<-JS
-    #{JSLint::Source.contents}
-
-    function JSLINTR(source,options) {
-      return [JSLINT(source,options),JSLINT.errors];
-    };
-    JS
+  # source - some String-like or IO-like JavaScript source.
+  def self.run(source)
+    source = source.respond_to?(:read) ? source.read : source
+    Result.new(*context.call("JSLINTR", source))
   end
 
-  # Public: Run the given script through JSLint.
-  #
-  # Examples:
-  #
-  #   JSLint.test(open('public/javascripts/application.js'))
-  #   #=> true
-  #
-  #   JSLint.test('function WTF();')
-  #   #=> JSLint::InvalidSource
-  #
-  # Returns nothing.
-  # Raises JSLint::LintError if an error is found.
-  def self.test(io, options={})
-    source = io.respond_to?(:read) ? io.read : io
-    result = Result.new(*context.call("JSLINTR", source, options))
-    raise LintError.new(result.errors) unless result.success
+  class Result
+    def initialize(valid, errors)
+      @valid = valid
+      @errors = errors
+    end
+
+    # Public: Did the JavaScript source pass JSLint without errors?
+    #
+    # This is the return value of the JSLINT() function.
+    #
+    # Returns true iff JSLint found no errors.
+    def valid?
+      @valid
+    end
+
+    # Public: A nicely formatted list of errors with their line number.
+    #
+    # Returns an Array of Strings.
+    def error_messages
+      # @errors will have a 'nil' last element if JSLINT it hit a catastrophic
+      # error before it finished looking at the whole file, so we 'compact'.
+      @errors.compact.map {|e|
+        "#{e['line']}:#{e['character']}: #{e['reason']}"
+      }
+    end
   end
 end

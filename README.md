@@ -82,6 +82,13 @@ you may want to try one of these projects:
 
 * [rondevera/jslintmate][jslintmate] - TextMate plugin for running JSLint. Uses JSC.
 
+Why
+---
+
+Why another JSLint wrapper?
+
+![you need a java runtime](http://mintdigital.github.com/execjslint/java.png)
+
 [jslint]: <http://jslint.com/>
 [rake]: <https://github.com/mintdigital/jslint/blob/master/examples/jslint.rake>
 [execjs-runtimes]: <https://github.com/sstephenson/execjs/blob/master/README.md>

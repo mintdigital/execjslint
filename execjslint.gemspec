@@ -1,15 +1,16 @@
 Gem::Specification.new do |s|
-  s.name      = 'jslint'
+  s.name      = 'execjslint'
   s.version   = '0.9.0'
-  s.date      = '2012-01-23'
+  s.date      = '2012-01-26'
 
-  s.homepage    = "http://github.com/mintdigital/jslint"
-  s.summary     = "Ruby JSLint Bridge"
+  s.homepage    = "http://github.com/mintdigital/execjslint"
+  s.summary     = "ExecJS JSLint Bridge"
   s.description = <<-EOS
     A bridge to run JSLint from Ruby via ExecJS.
   EOS
 
   s.files = [
+    'lib/execjslint.rb',
     'lib/jslint.rb',
     'LICENSE',
     'README.md'

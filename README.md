@@ -3,6 +3,13 @@ ExecJSLint
 
 ExecJSLint is a thin Ruby wrapper that uses ExecJS to execute [Douglas Crockford's JSLint][jslint].
 
+Install
+-------
+
+```
+$ gem install execjslint
+```
+
 Usage
 -----
 

@@ -8,7 +8,7 @@ Usage
 
 ```ruby
 js = File.open('path/to/my.js')
-results = ExecJSLint.run(js)
+results = JSLint.run(js)
 if result.problems.any?
   puts "You suck at JavaScript!"
   puts results.problems

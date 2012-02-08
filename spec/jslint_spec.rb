@@ -19,18 +19,23 @@ describe JSLint do
     before { JSLint.stub(context: context) }
 
     it 'lints a String of JS' do
-      context.should_receive(:call).with('JSLINTR', 'foo')
+      context.should_receive(:call).with('JSLINTR', 'foo', {})
       JSLint.run('foo')
     end
 
     it 'lints an IO-ish of JS' do
       ioish = Class.new { def self.read ; 'foo' ; end }
-      context.should_receive(:call).with('JSLINTR', 'foo')
+      context.should_receive(:call).with('JSLINTR', 'foo', {})
       JSLint.run(ioish)
     end
 
     it 'returns a Result object' do
       JSLint.run('').should be_an_instance_of JSLint::Result
+    end
+
+    it 'accepts JSLINT options' do
+      context.should_receive(:call).with('JSLINTR', 'foo', {sloppy: true})
+      JSLint.run('foo', sloppy: true)
     end
   end
 end
@@ -69,8 +74,13 @@ describe 'JSLint integration' do
     JSLint.run(js).valid?.should == false
   end
 
-  it 'respects jslint options' do
+  it 'respects inline jslint options' do
     js = "/*jslint  sloppy: true */\nfunction one() { return 1; }"
     JSLint.run(js).valid?.should == true
+  end
+
+  it 'respects passed jslint options' do
+    js = "function one() { return 1; }"
+    JSLint.run(js, sloppy: true).valid?.should == true
   end
 end

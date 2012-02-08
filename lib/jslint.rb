@@ -8,17 +8,19 @@ module JSLint
   # return value and the JSLINT.errors object.
   def self.context
     ExecJS.compile(
-      JSLint::Source.contents + "\n" +
-      "function JSLINTR(source) { return [JSLINT(source),JSLINT.errors]; };"
+      JSLint::Source.contents +
+      "function JSLINTR(source, options) { " +
+      "return [JSLINT(source, options),JSLINT.errors]; };"
     )
   end
 
   # Public: Run JSLint over some JavaScript source.
   #
   # source - some String-like or IO-like JavaScript source.
-  def self.run(source)
+  # options - Hash of options passed directly to JSLINT (default: {})
+  def self.run(source, options={})
     source = source.respond_to?(:read) ? source.read : source
-    Result.new(*context.call("JSLINTR", source))
+    Result.new(*context.call("JSLINTR", source, options))
   end
 
   class Result

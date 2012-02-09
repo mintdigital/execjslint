@@ -2,6 +2,7 @@
 
 * JSLint.run now accepts a hash of JSLINT options as an optional
   second argument. eg, JSLint.run(f, sloppy: true)
+* Added JSLint::TestTask to easily test many files via Rake
 
 == 0.9.0 (2012.01.26)
 

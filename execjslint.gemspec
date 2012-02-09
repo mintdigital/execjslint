@@ -12,10 +12,12 @@ Gem::Specification.new do |s|
   s.files = [
     'lib/execjslint.rb',
     'lib/jslint.rb',
+    'lib/jslint/testtask.rb',
     'LICENSE',
     'README.md'
   ]
 
+  s.add_dependency 'rake', '>= 0.8.7'
   s.add_dependency 'jslint-source'
   s.add_dependency 'execjs'
   s.add_development_dependency 'rspec'

@@ -31,7 +31,7 @@ module JSLint
 
     # Internal: Define the actual Rake task.
     def define_task
-      desc "Run #{@name == :jslint ? '' : @name} JSLint tests"
+      desc "Run #{@name == :jslint ? '' : @name + ' '}JSLint tests"
       task @name do
         t0 = Time.now
         errors = []

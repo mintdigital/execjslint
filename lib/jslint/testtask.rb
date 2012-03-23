@@ -54,6 +54,7 @@ module JSLint
         end
         puts "Finished in %.5f seconds" % [Time.now.to_f - t0.to_f]
         puts "%d files, %d errors"      % [@file_list.length, errors.length]
+        abort if errors.any?
       end
     end
 

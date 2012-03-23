@@ -1,3 +1,7 @@
+== 0.10.1 (2012.03.23)
+
+* Abort on failure, causing the process to exit with the correct status code
+
 == 0.10.0 (2012.02.08)
 
 * JSLint.run now accepts a hash of JSLINT options as an optional

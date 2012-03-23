@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name      = 'execjslint'
-  s.version   = '0.10.0'
-  s.date      = '2012-02-08'
+  s.version   = '0.10.1'
+  s.date      = '2012-03-23'
 
   s.homepage    = "http://github.com/mintdigital/execjslint"
   s.summary     = "ExecJS JSLint Bridge"
